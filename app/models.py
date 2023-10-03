@@ -42,3 +42,12 @@ class HeroPower(db.Model):
     power_id = db.Column(db.Integer, db.ForeignKey("powers.id"))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    @validates("strength")
+    def validate_strength(self, key, strength):
+        strengths = ["Strong", "Weak", "Average"]
+        if not strength in strengths:
+            raise ValueError(
+                "Strength must be one of the following values: 'Strong', 'Weak', 'Average'"
+            )
+        return strength
